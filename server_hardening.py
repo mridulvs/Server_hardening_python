@@ -127,7 +127,7 @@ result_file = Output(result_file_name)
 result_file.create_file()
 
 # Updating all the packages
-if os_name.oscheck() == 'Linux':
+if os_name.oscheck() == 'Linux11':
     result_file.write_output('\n 1. Updating packages output:-') 
     starting('Package updation')
     if os_name.flavour_check() == 'Redhat' or os_name.flavour_check() == 'CentOS':
@@ -202,7 +202,7 @@ if os_name.oscheck() == 'Linux':
         if not sysctl_harden.find_start_string(line):
             sysctl_harden.addlines(f'{line} = 0')
         elif '0' not in sysctl_harden.find_start_string(line):
-            print('moonji')
+            sysctl_harden.linereplace(line,f'{line} = 0')
         else:    
             result_file.write_output(f'{line} is already in {sysctl_harden.source}')
 else:
