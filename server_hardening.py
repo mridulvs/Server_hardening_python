@@ -153,9 +153,7 @@ if os_name.oscheck() == 'Linux11':
     # this will help to replace even if we have multiple "PermitRootLogin yes" or "PermitRootLogin no" lines in sshd_config 
     permitroot = ssh_harden.find_start_string('PermitRootLogin')
     if permitroot: 
-        ssh_harden.linereplace('PermitRootLogin yes','#PermitRootLogin yes')
-        ssh_harden.linereplace('PermitRootLogin no','#PermitRootLogin no')
-        ssh_harden.addlines('PermitRootLogin no')
+        ssh_harden.linereplace('PermitRootLogin yes','PermitRootLogin no')
     else:
         ssh_harden.addlines('PermitRootLogin no')
     # This is to add AllowUsers or modify the AllowUsers    
