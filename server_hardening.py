@@ -122,7 +122,7 @@ def completed(name):
 
 
 os_name = OS_details()
-result_file_name = f'hardening_result_{today.strftime("%d_%m_%Y_%H_%M_%S")}.txt'
+result_file_name = f'/tmp/hardening_result_{today.strftime("%d_%m_%Y_%H_%M_%S")}.txt'
 result_file = Output(result_file_name)
 result_file.create_file()
 
