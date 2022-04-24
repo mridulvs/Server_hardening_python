@@ -202,7 +202,7 @@ if os_name.oscheck() == 'Linux':
         if not sysctl_harden.find_start_string(line):
             sysctl_harden.addlines(f'{line} = 0')
         elif '0' not in sysctl_harden.find_start_string(line):
-            sysctl_harden.linereplace(line,f'{line} = 0')
+            sysctl_harden.linereplace(line,f'#{line}')
         else:    
             result_file.write_output(f"\t'{line} = 0' is already in {sysctl_harden.source}")
     result_file.write_output(f"{sp.getoutput('sysctl -p')}")
