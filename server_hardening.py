@@ -115,10 +115,13 @@ def yes_no_continue():
     else:
         return False
 
-def starting(name):
-    print(f'{name} is started now and it will take sometime...')
-def completed(name):
-    print(f'{name} is Completed now....')
+def starting(comment):
+    print(f'{comment} is started now and it will take sometime...')
+def completed(comment):
+    print(f'{comment} is Completed now....')
+def install(*packages):
+    for item in packages:
+        result_file.write_output(f"{sp.getoutput(item)}")
 
 
 os_name = OS_details()
@@ -131,11 +134,9 @@ if os_name.oscheck() == 'Linux11':
     result_file.write_output('\n 1. Updating packages output:-') 
     starting('Package updation')
     if os_name.flavour_check() == 'Redhat' or os_name.flavour_check() == 'CentOS':
-        result_file.write_output(f"{sp.getoutput('yum clean all')}")
-        result_file.write_output(f"{sp.getoutput('yum update -y')}")
+        install('yum clean all','yum update -y')
     elif os_name.flavour_check == 'Ubuntu' or os_name.flavour_check() == 'Debian':
-        result_file.write_output(f"{sp.getoutput('apt-get update')}")
-        result_file.write_output(f"{sp.getoutput('apt-get update')}")
+        install('apt-get update','apt-get upgrade')
     else: 
         result_file.write_output(f'\t OS not dected so skipping the step updating packages')
     completed('Package updation')
@@ -143,7 +144,7 @@ else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping package updation')
 
 #SSH Hardening Steps
-if os_name.oscheck() == 'Linux':
+if os_name.oscheck() == 'Linux11':
     result_file.write_output('2. SSH Hardening outputs:-')
     starting('SSH hardening')
     ssh_harden = Harden(result_file_name,'/etc/ssh/sshd_config')
@@ -195,8 +196,9 @@ if os_name.oscheck() == 'Linux':
     result_file.write_output('3. Sysctl conf Hardening outputs:-')
     starting('Sysctl_conf hardening')
     sysctl_harden = Harden(result_file_name,'/etc/sysctl.conf')
-    # Taking backup of the sysctl configuration file
+    #Taking backup of the sysctl configuration file
     sysctl_harden.backup()
+    #Adding the required lines to sysctl.conf
     sys_lines = ['net.ipv4.conf.all.accept_redirects','net.ipv4.conf.default.accept_redirects','net.ipv4.conf.all.secure_redirects','net.ipv4.conf.default.secure_redirects', 'net.ipv4.tcp_timestamps']
     for line in sys_lines:
         if not sysctl_harden.find_start_string(line):
@@ -206,9 +208,33 @@ if os_name.oscheck() == 'Linux':
             sysctl_harden.addlines(f'{line} = 0')
         else:    
             result_file.write_output(f"\t'{line} = 0' is already in {sysctl_harden.source}")
-    result_file.write_output(f"{sp.getoutput('sysctl -p')}")
+    #Applying the changes to sysctl.conf
+    os.system('sysctl -p')
+    completed('Sysctl_conf hardening')
 else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping Sysctl conf hardening')
+
+#Setting Password Policy and Expiry
+if os_name.oscheck() == 'Linux':
+    result_file.write_output('4. Setting Password policy and Expiry policy:-')
+    starting('Setting Password Policy and Expiry')
+    password_harden = Harden(result_file_name,'/etc/login.defs')
+    #Taking backup of the login.defs configuration file
+    password_harden.backup()
+    #Modifing the password policies and expiry policies
+    password_lines = {'PASS_MAX_DAYS':'90','PASS_MIN_DAYS':'7','PASS_MIN_LEN':'12','PASS_WARN_AGE':'7'}
+    for key,value in password_lines:
+        if not sysctl_harden.find_start_string(key):
+            password_harden.addlines(f'{key} {value}')
+        else:
+            password_harden.linereplace(key,f'#{key}')
+            password_harden.addlines(f'{key} {value}')
+    completed('Setting Password Policy and Expiry')
+else:
+    result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping the steps for setting Password Policy and Expiry')
+
+    
+
 
 
 
