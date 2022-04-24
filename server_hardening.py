@@ -204,7 +204,8 @@ if os_name.oscheck() == 'Linux':
         elif '0' not in sysctl_harden.find_start_string(line):
             sysctl_harden.linereplace(line,f'{line} = 0')
         else:    
-            result_file.write_output(f'{line} is already in {sysctl_harden.source}')
+            result_file.write_output(f"\t'{line} = 0' is already in {sysctl_harden.source}")
+    result_file.write_output(f"{sp.getoutput('sysctl -p')}")
 else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping Sysctl conf hardening')
 
