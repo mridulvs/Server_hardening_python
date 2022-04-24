@@ -200,7 +200,7 @@ if os_name.oscheck() == 'Linux':
     sys_lines = ['net.ipv4.conf.all.accept_redirects','net.ipv4.conf.default.accept_redirects','net.ipv4.conf.all.secure_redirects','net.ipv4.conf.default.secure_redirects', 'net.ipv4.tcp_timestamps']
     for line in sys_lines:
         if not sysctl_harden.find_start_string(line):
-            sysctl_harden.addlines(line)
+            sysctl_harden.addlines(f'{line} = 0')
         elif '0' not in sysctl_harden.find_start_string(line):
             print('moonji')
         else:    
