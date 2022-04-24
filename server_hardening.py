@@ -226,9 +226,11 @@ if os_name.oscheck() == 'Linux':
     for key in password_lines.keys():
         if not sysctl_harden.find_start_string(key):
             password_harden.addlines(f'{key} {password_lines[key]}')
+            print('MoonJi')
         else:
             password_harden.linereplace(key,f'#{key}')
             password_harden.addlines(f'{key} {password_lines[key]}')
+            print('Ethendhaa replace aakathe')
     completed('Setting Password Policy and Expiry')
 else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping the steps for setting Password Policy and Expiry')
