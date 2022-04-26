@@ -240,6 +240,8 @@ if os_name.oscheck() == 'Linux':
     else: 
         print('Moonji')
         print(test)
+    test1 = sp.run(['systemctl','status','chronyd'])
+    print(test1)
 
     
 
