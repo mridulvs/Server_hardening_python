@@ -235,7 +235,7 @@ else:
 # Chronyd installation and setting up timeservers
 if os_name.oscheck() == 'Linux':
     starting('5. Setting Up chronyd for time task')
-    chronyd_harden = Harden('/etc/chronyd.conf')
+    chronyd_harden = Harden(result_file_name,'/etc/chronyd.conf')
     chrony_status = sp.run(['systemctl','status','chronyd'])
     lines = ['server 192.168.1.1 prefer iburst minpoll 4 maxpoll 4', 'server 192.168.1.2 prefer iburst minpoll 4 maxpoll 4']
     if chrony_status == 0 or chrony_status == 3:
