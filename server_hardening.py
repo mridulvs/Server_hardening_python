@@ -234,14 +234,26 @@ else:
 
 # Chronyd installation and setting up timeservers
 if os_name.oscheck() == 'Linux':
-    test = os.system('systemctl status chronyd')
-    if test == 0:
-        print(test)
-    else: 
-        print('Moonji')
-        print(test)
-    test1 = sp.run(['systemctl','status','chronyd'])
-    print(test1)
+    starting('5. Setting Up chronyd for time task')
+    chronyd_harden = Harden('/etc/chronyd.conf')
+    chrony_status = sp.run(['systemctl','status','chronyd'])
+    lines = ['server 192.168.1.1 prefer iburst minpoll 4 maxpoll 4', 'server 192.168.1.2 prefer iburst minpoll 4 maxpoll 4']
+    if chrony_status == 0 or chrony_status == 3:
+        chronyd_harden.backup()
+        for line in lines:
+            if not chronyd_harden.find_start_string(line):
+                chronyd_harden.addlines(line)
+            else:
+                result_file.write_output(f'Chronyd already installed and correct conf also present')
+    else:
+        linux_command('yum install chronyd -y')
+        for line in lines:
+            chronyd_harden.addlines()
+    chronyd_harden.restartservice('chronyd')  
+    completed('5. Setting Up chronyd for time task')   
+        
+
+
 
     
 
