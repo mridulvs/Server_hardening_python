@@ -239,6 +239,7 @@ if os_name.oscheck() == 'Linux':
         print(test)
     else: 
         print('Moonji')
+        print(test)
 
     
 
