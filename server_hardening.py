@@ -234,8 +234,11 @@ else:
 
 # Chronyd installation and setting up timeservers
 if os_name.oscheck() == 'Linux':
-    test = linux_command('systemctl status chronyd')
-    print(test)
+    test = os.system('systemctl status chronyd')
+    if test:
+        print(test)
+    else: 
+        print('Moonji')
 
     
 
