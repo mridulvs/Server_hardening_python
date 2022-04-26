@@ -239,7 +239,7 @@ if os_name.oscheck() == 'Linux':
     chronyd_harden = Harden(result_file_name,'/etc/chrony.conf')
     chrony_status = sp.run(['systemctl','status','chronyd'])
     lines = ['server 192.168.1.1 prefer iburst minpoll 4 maxpoll 4', 'server 192.168.1.2 prefer iburst minpoll 4 maxpoll 4']
-    if chrony_status == 0 or chrony_status == 3:
+    if chrony_status.returncode == '0' or chrony_status.returncode == '3':
         chronyd_harden.backup()
         for line in lines:
             if not chronyd_harden.find_start_string(line):
