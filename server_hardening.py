@@ -248,7 +248,7 @@ if os_name.oscheck() == 'Linux':
     else:
         linux_command('yum install chronyd -y')
         for line in lines:
-            chronyd_harden.addlines()
+            chronyd_harden.addlines(line)
     chronyd_harden.restartservice('chronyd')  
     completed('5. Setting Up chronyd for time task')   
         
