@@ -119,7 +119,8 @@ def starting(comment):
     print(f'{comment} is started now and it will take sometime...')
 def completed(comment):
     print(f'{comment} is Completed now....')
-def install(*packages):
+
+def linux_command(*packages):
     for item in packages:
         result_file.write_output(f"{sp.getoutput(item)}")
 
@@ -134,9 +135,9 @@ if os_name.oscheck() == 'Linux11':
     result_file.write_output('\n 1. Updating packages output:-') 
     starting('Package updation')
     if os_name.flavour_check() == 'Redhat' or os_name.flavour_check() == 'CentOS':
-        install('yum clean all','yum update -y')
+        linux_command('yum clean all','yum update -y')
     elif os_name.flavour_check == 'Ubuntu' or os_name.flavour_check() == 'Debian':
-        install('apt-get update','apt-get upgrade')
+        linux_command('apt-get update','apt-get upgrade')
     else: 
         result_file.write_output(f'\t OS not dected so skipping the step updating packages')
     completed('Package updation')
@@ -190,7 +191,7 @@ else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping SSH hardening')
 
 #Sysctl.conf Hardening steps
-if os_name.oscheck() == 'Linux':
+if os_name.oscheck() == 'Linux11':
     result_file.write_output('3. Sysctl conf Hardening outputs:-')
     starting('Sysctl_conf hardening')
     sysctl_harden = Harden(result_file_name,'/etc/sysctl.conf')
@@ -213,7 +214,7 @@ else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping Sysctl conf hardening')
 
 #Setting Password Policy and Expiry
-if os_name.oscheck() == 'Linux':
+if os_name.oscheck() == 'Linux11':
     result_file.write_output('4. Setting Password policy and Expiry policy:-')
     starting('Setting Password Policy and Expiry')
     password_harden = Harden(result_file_name,'/etc/login.defs')
@@ -230,6 +231,11 @@ if os_name.oscheck() == 'Linux':
     completed('Setting Password Policy and Expiry')
 else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping the steps for setting Password Policy and Expiry')
+
+# Chronyd installation and setting up timeservers
+if os_name.oscheck() == 'Linux':
+    test = linux_command('systemctl status chronyd')
+    print(test)
 
     
 
