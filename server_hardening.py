@@ -247,7 +247,7 @@ if os_name.oscheck() == 'Linux':
             else:
                 result_file.write_output(f'Chronyd already installed and correct conf also present')
     else:
-        linux_command('yum install chronyd -y')
+        linux_command('yum install chrony -y')
         for line in lines:
             chronyd_harden.addlines(line)
     chronyd_harden.restartservice('chronyd')  
