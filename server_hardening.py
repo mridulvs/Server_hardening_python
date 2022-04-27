@@ -233,7 +233,7 @@ else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping the steps for setting Password Policy and Expiry')
 
 # Chronyd installation and setting up timeservers
-if os_name.oscheck() == 'Linux':
+if os_name.oscheck() == 'Linux11':
     result_file.write_output('5. Setting up chronyd for time:-')
     starting('Setting Up chronyd for time task')
     chronyd_harden = Harden(result_file_name,'/etc/chrony.conf')
@@ -258,6 +258,9 @@ if os_name.oscheck() == 'Linux':
                     result_file.write_output(f'Chronyd installed and correct conf present')
     chronyd_harden.restartservice('chronyd')  
     completed('Setting Up chronyd for time task')   
+else: 
+    result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping the steps for setting up chronyd')
+
         
 
 
