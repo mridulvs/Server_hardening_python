@@ -238,9 +238,8 @@ if os_name.oscheck() == 'Linux':
     starting('Setting Up chronyd for time task')
     chronyd_harden = Harden(result_file_name,'/etc/chrony.conf')
     chrony_status = sp.run(['systemctl','status','chronyd'])
-    print(chrony_status.returncode)
     lines = ['server 192.168.1.1 prefer iburst minpoll 4 maxpoll 4', 'server 192.168.1.2 prefer iburst minpoll 4 maxpoll 4']
-    if chrony_status.returncode == '0' or chrony_status.returncode == '3':
+    if chrony_status.returncode == 0 or chrony_status.returncode == 3:
         chronyd_harden.backup()
         for line in lines:
             if not chronyd_harden.find_start_string(line):
@@ -250,7 +249,7 @@ if os_name.oscheck() == 'Linux':
     else:
         linux_command('yum install chrony -y')
         print(chrony_status.returncode)
-        if chrony_status.returncode == '0' or chrony_status.returncode == '3':
+        if chrony_status.returncode == 0 or chrony_status.returncode == 3:
             chronyd_harden.backup()
             for line in lines:
                 if not chronyd_harden.find_start_string(line):
