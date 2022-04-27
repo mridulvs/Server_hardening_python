@@ -116,9 +116,9 @@ def yes_no_continue():
         return False
 
 def starting(comment):
-    print(f'\n{comment} is started now and it will take sometime...')
+    print(f'\n{comment} is started now and it will take sometime...\n')
 def completed(comment):
-    print(f'\n{comment} is Completed now....')
+    print(f'\n{comment} is Completed now....\n')
 
 def linux_command(*packages):
     for item in packages:
