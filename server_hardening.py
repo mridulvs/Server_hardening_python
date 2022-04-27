@@ -248,7 +248,7 @@ if os_name.oscheck() == 'Linux':
                 result_file.write_output(f'Chronyd already installed and correct conf also present')
     else:
         linux_command('yum install chrony -y')
-        print(chrony_status.returncode)
+        chrony_status = sp.run(['systemctl','status','chronyd'])
         if chrony_status.returncode == 0 or chrony_status.returncode == 3:
             chronyd_harden.backup()
             for line in lines:
