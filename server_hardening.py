@@ -116,9 +116,9 @@ def yes_no_continue():
         return False
 
 def starting(comment):
-    print(f'{comment} is started now and it will take sometime...')
+    print(f'\n{comment} is started now and it will take sometime...')
 def completed(comment):
-    print(f'{comment} is Completed now....')
+    print(f'\n{comment} is Completed now....')
 
 def linux_command(*packages):
     for item in packages:
@@ -238,6 +238,7 @@ if os_name.oscheck() == 'Linux':
     starting('Setting Up chronyd for time task')
     chronyd_harden = Harden(result_file_name,'/etc/chrony.conf')
     chrony_status = sp.run(['systemctl','status','chronyd'])
+    print(chrony_status.returncode)
     lines = ['server 192.168.1.1 prefer iburst minpoll 4 maxpoll 4', 'server 192.168.1.2 prefer iburst minpoll 4 maxpoll 4']
     if chrony_status.returncode == '0' or chrony_status.returncode == '3':
         chronyd_harden.backup()
@@ -248,6 +249,7 @@ if os_name.oscheck() == 'Linux':
                 result_file.write_output(f'Chronyd already installed and correct conf also present')
     else:
         linux_command('yum install chrony -y')
+        print(chrony_status.returncode)
         if chrony_status.returncode == '0' or chrony_status.returncode == '3':
             chronyd_harden.backup()
             for line in lines:
