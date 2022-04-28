@@ -5,6 +5,9 @@ import os
 import shutil
 import platform
 import subprocess as sp
+import time
+
+start_time = time.time()
 
 today = datetime.now()
 
@@ -126,7 +129,7 @@ def linux_command(*packages):
 
 
 os_name = OS_details()
-result_file_name = f'/tmp/hardening_result_{today.strftime("%d_%m_%Y_%H_%M_%S")}.txt'
+result_file_name = f'hardening_result_{today.strftime("%d_%m_%Y_%H_%M_%S")}.txt'
 result_file = Output(result_file_name)
 result_file.create_file()
 
@@ -261,22 +264,7 @@ if os_name.oscheck() == 'Linux11':
 else: 
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping the steps for setting up chronyd')
 
-        
+end_time = time.time()
 
-
-
-    
-
-
-
-
-
-
-
-    
-
-
-   
-
-
-
+total_time = end_time - start_time
+print(total_time)
