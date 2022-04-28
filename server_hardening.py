@@ -228,6 +228,8 @@ if os_name.oscheck() == 'Linux':
     for key in password_lines.keys():
         if not password_harden.find_start_string(key):
             password_harden.addlines(f'{key} {password_lines[key]}')
+        elif password_harden.find_start_string(f'{key} {password_lines[key]}'):
+            result_file.write_output(f'Policy is already set like:- {key} {password_lines[key]}')
         else:
             password_harden.linereplace(key,f'#{key}')
             password_harden.addlines(f'{key} {password_lines[key]}')
