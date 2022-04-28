@@ -134,7 +134,7 @@ result_file = Output(result_file_name)
 result_file.create_file()
 
 # Updating all the packages
-if os_name.oscheck() == 'Linux11':
+if os_name.oscheck() == 'Linux':
     result_file.write_output('\n 1. Updating packages output:-') 
     starting('Package updation')
     if os_name.flavour_check() == 'Redhat' or os_name.flavour_check() == 'CentOS':
@@ -148,7 +148,7 @@ else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping package updation')
 
 #SSH Hardening Steps
-if os_name.oscheck() == 'Linux11':
+if os_name.oscheck() == 'Linux':
     result_file.write_output('2. SSH Hardening outputs:-')
     starting('SSH hardening')
     ssh_harden = Harden(result_file_name,'/etc/ssh/sshd_config')
@@ -194,7 +194,7 @@ else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping SSH hardening')
 
 #Sysctl.conf Hardening steps
-if os_name.oscheck() == 'Linux11':
+if os_name.oscheck() == 'Linux':
     result_file.write_output('3. Sysctl conf Hardening outputs:-')
     starting('Sysctl_conf hardening')
     sysctl_harden = Harden(result_file_name,'/etc/sysctl.conf')
@@ -217,7 +217,7 @@ else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping Sysctl conf hardening')
 
 #Setting Password Policy and Expiry
-if os_name.oscheck() == 'Linux11':
+if os_name.oscheck() == 'Linux':
     result_file.write_output('4. Setting Password policy and Expiry policy:-')
     starting('Setting Password Policy and Expiry')
     password_harden = Harden(result_file_name,'/etc/login.defs')
@@ -236,7 +236,7 @@ else:
     result_file.write_output(f'Operating system is {os_name.oscheck()}, So skipping the steps for setting Password Policy and Expiry')
 
 # Chronyd installation and setting up timeservers
-if os_name.oscheck() == 'Linux11':
+if os_name.oscheck() == 'Linux':
     result_file.write_output('5. Setting up chronyd for time:-')
     starting('Setting Up chronyd for time task')
     chronyd_harden = Harden(result_file_name,'/etc/chrony.conf')
