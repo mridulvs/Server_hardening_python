@@ -229,7 +229,7 @@ if os_name.oscheck() == 'Linux':
         if not password_harden.find_start_string(key):
             password_harden.addlines(f'{key} {password_lines[key]}')
         elif password_harden.find_start_string(f'{key} {password_lines[key]}'):
-            result_file.write_output(f'Policy is already set like:- {key} {password_lines[key]}')
+            result_file.write_output(f'\tPolicy is already set like:- {key} {password_lines[key]}')
         else:
             password_harden.linereplace(key,f'#{key}')
             password_harden.addlines(f'{key} {password_lines[key]}')
@@ -250,7 +250,7 @@ if os_name.oscheck() == 'Linux':
             if not chronyd_harden.find_start_string(line):
                 chronyd_harden.addlines(line)
             else:
-                result_file.write_output(f'Chronyd already installed and correct conf also present')
+                result_file.write_output(f'\tChronyd already installed and correct conf also present')
     else:
         linux_command('yum install chrony -y')
         chrony_status = sp.run(['systemctl','status','chronyd'])
@@ -260,7 +260,7 @@ if os_name.oscheck() == 'Linux':
                 if not chronyd_harden.find_start_string(line):
                     chronyd_harden.addlines(line)
                 else:
-                    result_file.write_output(f'Chronyd installed and correct conf present')
+                    result_file.write_output(f'\tChronyd installed and correct conf present')
     chronyd_harden.restartservice('chronyd')  
     completed('Setting Up chronyd for time task')   
 else: 
